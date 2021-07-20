@@ -24,5 +24,5 @@ bar =(
             ]
         )
     )
-    .render('./hobby.html')
+    .render('./reasult/hobby.html')
 )
