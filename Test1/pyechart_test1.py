@@ -25,9 +25,7 @@ df.drop('bianh', axis=1, inplace=True)
 # print(df.describe())
 
 #  df = df[df['liver_days']>0]
-"""
-绘表
-"""
+
 # 设置UTF-8
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
@@ -40,6 +38,9 @@ df['death_reason'].fillna('无', inplace=True)
 df['death_year'] = pd.to_datetime(df['death_data']).dt.year
 df['death_month'] = pd.to_datetime(df['death_data']).dt.month
 
+"""
+绘表
+"""
 
 # 各年份淘汰公司总数柱形图
 def year_bar():
