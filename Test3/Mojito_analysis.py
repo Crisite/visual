@@ -5,6 +5,7 @@ import time
 import requests
 import json
 
+# import stylecloud
 from IPython.display import Image  # 用于在jupyter lab中显示本地图片
 
 from pyecharts.charts import Pie, Bar, Line, Page
@@ -42,53 +43,55 @@ r = requests.post(host)
 # 获取token
 token = r.json()['access_token']
 
-# def get_sentiment_score(text):
-#     """
-#     输入文本，返回情感倾向得分
-#     """
-#     url = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify?charset=UTF-8&access_token={}'.format(token)
-#     data = {
-#         'text': text
-#     }
-#     data = json.dumps(data)  #字典-字符串
-#     # 发起请求
-#     try:
-#         res = requests.post(url, data=data, timeout=3)
-#         items_score = res.json()['items']
-#     except Exception as e:
-#         time.sleep(3)
-#         res = requests.post(url, data=data, timeout=3)
-#         items_score = res.json()['items']
-#     return items_score
-#
-#
-# # 调用函数分析每条评论的情感倾向
-#
-# score_list = []
-#
-# step = 0
-# for i in df_douban['content']:
-#     score = get_sentiment_score(i)
-#     # 打印进度
-#     step += 1
-#     print('我正在获取第{}个评分'.format(step), end='\r')
-#     score_list.append(score)
-#
-# # 提取正负概率
-# positive_prob = [i[0]['positive_prob'] for i in score_list]
-# negative_prob = [i[0]['negative_prob'] for i in score_list]
-#
-# df_douban['positive_prob'] = positive_prob
-# df_douban['negative_prob'] = negative_prob
-#
-# # 正负向
-# df_douban['label'] = ['正向' if i >0.5 else '负向' for i in df_douban.positive_prob]
-# print(df_douban.head())
+def get_sentiment_score(text):
+    """
+    输入文本，返回情感倾向得分
+    """
+    url = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify?charset=UTF-8&access_token={}'.format(token)
+    data = {
+        'text': text
+    }
+    data = json.dumps(data)  #字典-字符串
+    # 发起请求
+    try:
+        res = requests.post(url, data=data, timeout=3)
+        items_score = res.json()['items']
+    except Exception as e:
+        time.sleep(3)
+        res = requests.post(url, data=data, timeout=3)
+        items_score = res.json()['items']
+    return items_score
+
+
+# 调用函数分析每条评论的情感倾向
+
+score_list = []
+
+step = 0
+for i in df_douban['content']:
+    score = get_sentiment_score(i)
+    # 打印进度
+    step += 1
+    print('我正在获取第{}个评分'.format(step), end='\n')
+    score_list.append(score)
+df = pd.DataFrame(score_list)
+df.to_csv(R'./data/pingfen.csv', encoding="utf-8")
+
+# 提取正负概率
+positive_prob = [i[0]['positive_prob'] for i in score_list]
+negative_prob = [i[0]['negative_prob'] for i in score_list]
+
+df_douban['positive_prob'] = positive_prob
+df_douban['negative_prob'] = negative_prob
+
+# 正负向
+df_douban['label'] = ['正向' if i >0.5 else '负向' for i in df_douban.positive_prob]
+print(df_douban.head())
 
 # 各星级数量
 star_num = df_douban.star.value_counts()
 star_num = star_num.sort_index()
-print(star_num)
+# print(star_num)
 
 #   各评论星级占比Pie图
 data_pair = [list(z) for z in zip([i + '星' for i in star_num.index], star_num.values.tolist())]
@@ -96,14 +99,14 @@ pie1 = (
     Pie(init_opts=opts.InitOpts(width='1350px', height='750px'))
         .add('', data_pair, radius=['35%', '60%'])
         .set_global_opts(
-        title_opts=opts.TitleOpts(title='豆瓣短评评分占比'),
-        legend_opts=opts.LegendOpts(orient='vertical', pos_top='15%', pos_left='2%')
+            title_opts=opts.TitleOpts(title='豆瓣短评评分占比'),
+            legend_opts=opts.LegendOpts(orient='vertical', pos_top='15%', pos_left='2%')
         )
         .set_series_opts(label_opts=opts.LabelOpts(formatter='{b}:{d}%'))
-        .render_notebook()
+        # .render()
 )
 
-
+#
 # def get_cut_words(content_series):
 #     # 读入停用词表
 #     stop_words = []
@@ -133,7 +136,7 @@ pie1 = (
 #
 #
 # text1 = get_cut_words(content_series=df_douban[(df_douban.star == '4') | (df_douban.star == '5')]['content'])
-# text1[:5]
+# print(text1[:5])
 #
 #
 # # 绘制词云图

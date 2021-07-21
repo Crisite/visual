@@ -65,7 +65,7 @@ v1 = [
     [random.randint(min_, max_) for i in range(50)],
     [random.randint(min_, max_) for i in range(50)],
 ]
-print(v1)
+# print(v1)
 
 c = Boxplot()
 x_axis = ['项目A', '项目B', '项目C', '项目D']
@@ -73,7 +73,7 @@ x_axis = ['项目A', '项目B', '项目C', '项目D']
 # print(y_axis)
 c.add_xaxis(['项目A', '项目B', '项目C', '项目D'])
 c.add_yaxis('数量', c.prepare_data(v1))
-print(c.prepare_data(v1))
+# print(c.prepare_data(v1))
 # boxplot.add('',x_axis,y_axis)
 c.set_global_opts(
         # yaxis_opts=opts.AxisOpts(type_='value', axislabel_opts=opts.LabelOpts(formatter='{value} 斤')),
@@ -97,5 +97,5 @@ grid = (
         pos_right="7%",pos_bottom="5%",width='35%',height='35%'
     ))
 
-    .render()
+    .render('./reasult/Gridtest.html')
 )
