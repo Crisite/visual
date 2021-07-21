@@ -1,11 +1,24 @@
 import pandas as pd
+from pyecharts.charts import ThemeRiver
+from pyecharts import options as opts
 
-df = pd.read_csv('./resource/sale_amount.csv')
-df.info()
-print(df.head().to_string())
-x_data = ['超市A', '超市B', '超市C', '超市D', '超市E']
-ya_data = df['超市A']
-yb_data = df['超市B']
-yc_data = df['超市C']
-yd_data = df['超市D']
-ye_data = df['超市E']
+df = pd.read_csv('./resource/sale_amount.csv',index_col='date')
+series = df.columns.values
+# print(series)
+# print(df.head())
+data_list = []
+for column_name in series:
+    for x,y in zip(df[column_name].index,df[column_name].values):
+        data_list.append([x,int(y),column_name])
+# print(data_list)
+
+
+rv = (
+    ThemeRiver(init_opts=opts.InitOpts(width="900px", height="600px"))
+    .add(
+        series_name=series,
+        data=data_list,
+        singleaxis_opts=opts.SingleAxisOpts(type_='time')
+         )
+    .render('./reasult/rivertest.html')
+)
