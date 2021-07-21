@@ -51,7 +51,7 @@ pie =(
         rosetype='radius'
          )
 
-    # 饼图配置项可参考教程 https://blog.csdn.net/qq_43527959/article/details/110872389
+    # 配置项可参考教程 https://blog.csdn.net/qq_43527959/article/details/110872389
 
     .set_global_opts(
         title_opts=opts.TitleOpts(
