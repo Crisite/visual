@@ -37,7 +37,7 @@ df['death_reason'].fillna('无', inplace=True)
 # death_year death_month列
 df['death_year'] = pd.to_datetime(df['death_data']).dt.year
 df['death_month'] = pd.to_datetime(df['death_data']).dt.month
-
+# print(pd.to_datetime(df['death_data']).dt.year)
 """
 绘表
 """
@@ -190,10 +190,9 @@ def financing_cloud():
             title_opts=opts.TitleOpts(
                 title="融资情况", title_textstyle_opts=opts.TextStyleOpts(font_size=18)
             ),
-            tooltip_opts=opts.TooltipOpts(is_show=True),
+            tooltip_opts=opts.TooltipOpts(is_show=True)
         )
-    ).render_notebook()
+    ).render()
 
-
-# financing_cloud()
+financing_cloud()
 
