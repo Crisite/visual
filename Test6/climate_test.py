@@ -329,6 +329,7 @@ print(hist)
 showRoseWind(hist, 'Torino', max(hist), 'Torino_rose')
 
 
+
 # def RoseWind_Speed(df_city):
 #     # degs = [45, 90, ..., 360]
 #     degs = np.arange(45, 361, 45)
