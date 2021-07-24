@@ -298,11 +298,12 @@ for updateDate in updateDates:
 """
  Page
 """
-page = Page(layout=Page.DraggablePageLayout)
-page.add(wordcloud)
-page.add(epidemic_trend_line)
-page.add(epidemic_map_timeline)
-page.add(epidemic_percent_timeline)
-page.add(epidemic_percent_time)
-page.render('./reasult/epidemic_page.html')
-# Page.save_resize_html('./reasult/epidemic_page.htm', cfg_file='chart_config.json', dest='integrated_case,html')
+# page = Page(layout=Page.DraggablePageLayout)
+# page.add(wordcloud)
+# page.add(epidemic_trend_line)
+# page.add(epidemic_map_timeline)
+# page.add(epidemic_percent_timeline)
+# page.add(epidemic_percent_time)
+# page.render('./reasult/epidemic_page.html')
+Page.save_resize_html('./reasult/epidemic_page.html', cfg_file='./reasult/chart_config.json',
+                      dest='./reasult/epidemic_page.html')
